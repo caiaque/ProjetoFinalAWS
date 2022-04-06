@@ -11,19 +11,19 @@ namespace CampeonatoBrasileiro.App.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TimeController : Controller
+    public class TransferenciaController : Controller
     {
-        private IBaseService<Time> _baseTimeService;
+        private IBaseService<Transferencia> _baseTransferenciaService;
 
-        public TimeController(IBaseService<Time> baseTimeService)
+        public TransferenciaController(IBaseService<Transferencia> baseTransferenciaService)
         {
-            _baseTimeService = baseTimeService;
+            _baseTransferenciaService = baseTransferenciaService;
         }
 
         [HttpGet]
         public IActionResult ObterTodosOsTimes()
         {
-            return Execute(() => _baseTimeService.GetAll());
+            return Execute(() => _baseTransferenciaService.GetAll());
         }
 
         [HttpGet("{id}")]
@@ -32,28 +32,28 @@ namespace CampeonatoBrasileiro.App.Controllers
             if (id == null || id == Guid.Empty)
                 return NotFound();
 
-            return Execute(() => _baseTimeService.GetById(id));
+            return Execute(() => _baseTransferenciaService.GetById(id));
         }
 
         [HttpPost]
-        public IActionResult NovoTime([FromBody] Time time)
+        public IActionResult NovoTime([FromBody] Transferencia transferencia)
         {
-            if (time == null)
+            if (transferencia == null)
                 return NotFound();
 
-            return Execute(() => _baseTimeService.Add<TimeValidator>(time).Id);
+            return Execute(() => _baseTransferenciaService.Add<TransferenciaValidator>(transferencia).Id);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] Time time)
+        public IActionResult Update(Guid id, [FromBody]Transferencia transferencia)
         {
             if (id == null || id == Guid.Empty)
                 return NotFound();
 
-            if (time == null)
+            if (transferencia == null)
                 return NotFound();
 
-            return Execute(() => _baseTimeService.Update<TimeValidator>(time, id));
+            return Execute(() => _baseTransferenciaService.Update<TransferenciaValidator>(transferencia, id));
         }
 
         [HttpDelete("{id}")]
@@ -64,7 +64,7 @@ namespace CampeonatoBrasileiro.App.Controllers
 
             Execute(() =>
             {
-                _baseTimeService.Delete(id);
+                _baseTransferenciaService.Delete(id);
                 return true;
             });
 

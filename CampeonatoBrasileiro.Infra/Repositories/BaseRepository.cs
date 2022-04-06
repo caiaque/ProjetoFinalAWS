@@ -40,8 +40,15 @@ namespace CampeonatoBrasileiro.Infra.Repositories
             return this._campeonatoBrasileiroContext.Set<TEntity>().ToList();
         }
 
-        public void Update(TEntity obj)
+        public void Update(TEntity obj, Guid id)
         {
+            var objetoDoBanco = this._campeonatoBrasileiroContext.Set<TEntity>().Find(id);
+
+            if(objetoDoBanco is null)
+                throw new ArgumentException("Objeto não encontrado para atualização");
+
+            objetoDoBanco = obj;
+
             this._campeonatoBrasileiroContext.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             this._campeonatoBrasileiroContext.SaveChanges();
         }

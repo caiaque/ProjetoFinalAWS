@@ -12,7 +12,7 @@ namespace CampeonatoBrasileiro.Domain.Interfaces
         TEntity Get(Guid id);
         IList<TEntity> GetList();
         void Add(TEntity obj);
-        void Update(TEntity obj);
+        void Update(TEntity obj, Guid id);
         void Delete(Guid id);
     }
 }

@@ -47,10 +47,10 @@ namespace CampeonatoBrasileiro.Service.Services
             return _baseRepository.Get(id);
         }
 
-        public TEntity Update<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
+        public TEntity Update<TValidator>(TEntity obj, Guid id) where TValidator : AbstractValidator<TEntity>
         {
             Validate(obj, Activator.CreateInstance<TValidator>());
-            _baseRepository.Update(obj);
+            _baseRepository.Update(obj, id);
             return obj;
         }
     }

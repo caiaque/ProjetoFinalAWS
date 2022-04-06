@@ -11,19 +11,19 @@ namespace CampeonatoBrasileiro.App.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TimeController : Controller
+    public class JogadorController : Controller
     {
-        private IBaseService<Time> _baseTimeService;
+        private IBaseService<Jogador> _baseJogadorService;
 
-        public TimeController(IBaseService<Time> baseTimeService)
+        public JogadorController(IBaseService<Jogador> baseJogadorService)
         {
-            _baseTimeService = baseTimeService;
+            _baseJogadorService = baseJogadorService;
         }
 
         [HttpGet]
         public IActionResult ObterTodosOsTimes()
         {
-            return Execute(() => _baseTimeService.GetAll());
+            return Execute(() => _baseJogadorService.GetAll());
         }
 
         [HttpGet("{id}")]
@@ -32,28 +32,28 @@ namespace CampeonatoBrasileiro.App.Controllers
             if (id == null || id == Guid.Empty)
                 return NotFound();
 
-            return Execute(() => _baseTimeService.GetById(id));
+            return Execute(() => _baseJogadorService.GetById(id));
         }
 
         [HttpPost]
-        public IActionResult NovoTime([FromBody] Time time)
+        public IActionResult NovoTime([FromBody] Jogador jogador)
         {
-            if (time == null)
+            if (jogador == null)
                 return NotFound();
 
-            return Execute(() => _baseTimeService.Add<TimeValidator>(time).Id);
+            return Execute(() => _baseJogadorService.Add<JogadorValidator>(jogador).Id);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] Time time)
+        public IActionResult Update(Guid id, [FromBody]Jogador jogador)
         {
             if (id == null || id == Guid.Empty)
                 return NotFound();
 
-            if (time == null)
+            if (jogador == null)
                 return NotFound();
 
-            return Execute(() => _baseTimeService.Update<TimeValidator>(time, id));
+            return Execute(() => _baseJogadorService.Update<JogadorValidator>(jogador, id));
         }
 
         [HttpDelete("{id}")]
@@ -64,7 +64,7 @@ namespace CampeonatoBrasileiro.App.Controllers
 
             Execute(() =>
             {
-                _baseTimeService.Delete(id);
+                _baseJogadorService.Delete(id);
                 return true;
             });
 

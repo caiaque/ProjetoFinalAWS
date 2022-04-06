@@ -19,6 +19,6 @@ namespace CampeonatoBrasileiro.Domain.Interfaces
 
         TEntity GetById(Guid id);
 
-        TEntity Update<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
+        TEntity Update<TValidator>(TEntity obj, Guid id) where TValidator : AbstractValidator<TEntity>;
     }
 }
