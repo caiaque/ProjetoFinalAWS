@@ -33,6 +33,8 @@ namespace CampeonatoBrasileiro.App
             services.AddDbContext<CampeonatoBrasileiroContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Conexao")));
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
             services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
+            services.AddScoped(typeof(IPartidaRepository), typeof(PartidaRepository));
+            services.AddScoped(typeof(ITorneioRepository), typeof(TorneioRepository));
 
         }
 
