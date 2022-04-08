@@ -3,6 +3,7 @@ using CampeonatoBrasileiro.Domain.Interfaces;
 using CampeonatoBrasileiro.Service.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,40 +16,54 @@ namespace CampeonatoBrasileiro.App.Controllers
     public class PartidaController : Controller
     {
         private IBaseService<PartidaTorneio> _basePartidaTorneioService;
-
-        public PartidaController(IBaseService<PartidaTorneio> basePartidaTorneioService)
+        private readonly IMemoryCache _cache;
+        private const string PARTIDAS_KEY = "Partidas";
+        public PartidaController(IBaseService<PartidaTorneio> basePartidaTorneioService, IMemoryCache cache)
         {
             _basePartidaTorneioService = basePartidaTorneioService;
+            _cache = cache;
         }
 
         [HttpGet]
-        public IActionResult ObterTodosOsTimes()
+        public IActionResult ObterTodoAsPartidas()
         {
-            return Execute(() => _basePartidaTorneioService.GetAll());
+            if(_cache.TryGetValue(PARTIDAS_KEY, out List<PartidaTorneio> partidas))
+            {
+                return Ok(partidas);
+            }
+
+            var cacheExpiracao = new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5400),
+                SlidingExpiration = TimeSpan.FromSeconds(2700)
+            };
+
+            return _cache.Set(PARTIDAS_KEY, Execute(() => _basePartidaTorneioService.GetAll()), cacheExpiracao);
         }
 
         [HttpGet("{id}")]
-        public IActionResult ObterTimePorId(Guid id)
+        public IActionResult ObterPartidaPorId(Guid id)
         {
-            if (id == null || id == Guid.Empty)
+            if (id == Guid.Empty)
                 return NotFound();
 
             return Execute(() => _basePartidaTorneioService.GetById(id));
+            
         }
 
         [HttpPost]
-        public IActionResult NovoTime([FromBody] PartidaTorneio jogador)
+        public IActionResult NovoPartida([FromBody] PartidaTorneio jogador)
         {
             if (jogador == null)
                 return NotFound();
-
+            _cache.Remove(PARTIDAS_KEY);
             return Execute(() => _basePartidaTorneioService.Add<PartidaValidator>(jogador).Id);
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(Guid id, [FromBody] PartidaTorneio jogador)
         {
-            if (id == null || id == Guid.Empty)
+            if (id == Guid.Empty)
                 return NotFound();
 
             if (jogador == null)
@@ -60,7 +75,7 @@ namespace CampeonatoBrasileiro.App.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            if (id == null || id == Guid.Empty)
+            if (id == Guid.Empty)
                 return NotFound();
 
             Execute(() =>

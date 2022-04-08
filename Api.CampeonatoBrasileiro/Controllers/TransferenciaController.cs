@@ -29,7 +29,7 @@ namespace CampeonatoBrasileiro.App.Controllers
         [HttpGet("{id}")]
         public IActionResult ObterTimePorId(Guid id)
         {
-            if (id == null || id == Guid.Empty)
+            if (id == Guid.Empty)
                 return NotFound();
 
             return Execute(() => _baseTransferenciaService.GetById(id));
@@ -47,7 +47,7 @@ namespace CampeonatoBrasileiro.App.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(Guid id, [FromBody]Transferencia transferencia)
         {
-            if (id == null || id == Guid.Empty)
+            if (id == Guid.Empty)
                 return NotFound();
 
             if (transferencia == null)
@@ -59,7 +59,7 @@ namespace CampeonatoBrasileiro.App.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
         {
-            if (id == null || id == Guid.Empty)
+            if (id == Guid.Empty)
                 return NotFound();
 
             Execute(() =>

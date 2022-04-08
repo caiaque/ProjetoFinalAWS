@@ -2,6 +2,8 @@
 using CampeonatoBrasileiro.Domain.Interfaces;
 using CampeonatoBrasileiro.Infra.Context;
 using CampeonatoBrasileiro.Infra.Repositories;
+using CampeonatoBrasileiro.Mensageiro;
+using CampeonatoBrasileiro.Mensageiro.Interfaces;
 using CampeonatoBrasileiro.Service.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +37,8 @@ namespace CampeonatoBrasileiro.App
             services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
             services.AddScoped(typeof(IPartidaRepository), typeof(PartidaRepository));
             services.AddScoped(typeof(ITorneioRepository), typeof(TorneioRepository));
+            services.AddScoped<ISend, Send>();
+            services.AddMemoryCache();
 
         }
 
