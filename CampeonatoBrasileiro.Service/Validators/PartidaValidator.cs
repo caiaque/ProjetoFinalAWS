@@ -12,13 +12,9 @@ namespace CampeonatoBrasileiro.Service.Validators
     {
         public PartidaValidator()
         {
-            RuleFor(c => c.TimeCasaId)
-                .NotEmpty().WithMessage("Time da casa obrigatório.")
-                .NotNull().WithMessage("Time da casa obrigatório.");
-
-            RuleFor(c => c.TimeVisitanteId)
-                .NotEmpty().WithMessage("Time visitante obrigatória.")
-                .NotNull().WithMessage("Time visitante obrigatória.");
+            RuleFor(c => c.TimesParticipantes)
+                .NotEmpty().WithMessage("Time obrigatório.")
+                .NotNull().WithMessage("Time obrigatório.");
 
             RuleFor(c => c.Data)
                 .LessThan(DateTime.Now).WithMessage("Data da partida não pode ser anterior que a data atual.")

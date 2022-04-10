@@ -4,14 +4,16 @@ using CampeonatoBrasileiro.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CampeonatoBrasileiro.Infra.Migrations
 {
     [DbContext(typeof(CampeonatoBrasileiroContext))]
-    partial class CampeonatoBrasileiroContextModelSnapshot : ModelSnapshot
+    [Migration("20220410064011_novaBase")]
+    partial class novaBase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

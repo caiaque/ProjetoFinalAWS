@@ -39,6 +39,8 @@ namespace CampeonatoBrasileiro.App
             services.AddScoped(typeof(ITorneioRepository), typeof(TorneioRepository));
             services.AddScoped<ISend, Send>();
             services.AddMemoryCache();
+            services.AddScoped<ITimeRepository, TimeRepository>();
+            services.AddScoped<IJogadorRepository, JogadorRepository>();
 
         }
 

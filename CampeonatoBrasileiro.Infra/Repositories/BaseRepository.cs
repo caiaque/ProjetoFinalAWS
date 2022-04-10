@@ -26,7 +26,12 @@ namespace CampeonatoBrasileiro.Infra.Repositories
 
         public void Delete(Guid id)
         {
-            this._campeonatoBrasileiroContext.Set<TEntity>().Remove(Get(id));
+            var objetoDoBanco = Get(id);
+
+            if (objetoDoBanco is null)
+                throw new Exception("Objeto não encontrado para exclusão");
+
+            this._campeonatoBrasileiroContext.Set<TEntity>().Remove(objetoDoBanco);
             this._campeonatoBrasileiroContext.SaveChanges();
         }
 

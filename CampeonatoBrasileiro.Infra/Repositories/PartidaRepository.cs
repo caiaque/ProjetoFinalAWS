@@ -1,4 +1,5 @@
-﻿using CampeonatoBrasileiro.Domain.Entities;
+﻿using CampeonatoBrasileiro.Domain.DTOs;
+using CampeonatoBrasileiro.Domain.Entities;
 using CampeonatoBrasileiro.Domain.Interfaces;
 using CampeonatoBrasileiro.Infra.Context;
 using System;
@@ -18,10 +19,19 @@ namespace CampeonatoBrasileiro.Infra.Repositories
             _campeonatoBrasileiroContext = campeonatoBrasileiroContext;
         }
 
-        public void Add(PartidaTorneio obj)
+        public PartidaTorneio Add(PartidaDto obj)
         {
-            this._campeonatoBrasileiroContext.Set<PartidaTorneio>().Add(obj);
+            PartidaTorneio partida = new PartidaTorneio();
+            var times = this._campeonatoBrasileiroContext.Times.Where(x => obj.Times.Contains(x.Id)).ToList();
+
+            partida.TimesParticipantes = times;
+            partida.Duracao = obj.Duracao;
+            partida.Data = obj.Data;
+
+            this._campeonatoBrasileiroContext.Set<PartidaTorneio>().Add(partida);
             this._campeonatoBrasileiroContext.SaveChanges();
+
+            return partida;
         }
 
         public void Delete(Guid id)
@@ -40,7 +50,7 @@ namespace CampeonatoBrasileiro.Infra.Repositories
             return this._campeonatoBrasileiroContext.Set<PartidaTorneio>().ToList();
         }
 
-        public void Update(PartidaTorneio obj, Guid id)
+        public PartidaTorneio Update(PartidaDto obj, Guid id)
         {
 
             var partida = this._campeonatoBrasileiroContext.Partidas.FirstOrDefault(p => p.Id == id);
@@ -49,14 +59,17 @@ namespace CampeonatoBrasileiro.Infra.Repositories
                 throw new ArgumentException("Objeto não encontrado para atualização");
             else
             {
-                partida.TimeCasaId = obj.TimeCasaId;
-                partida.TimeVisitanteId = obj.TimeVisitanteId;
+                var times = this._campeonatoBrasileiroContext.Times.Where(x => obj.Times.Contains(x.Id)).ToList();
+
+                partida.TimesParticipantes = times;
                 partida.Data = obj.Data;
                 partida.Duracao = obj.Duracao;
 
                 this._campeonatoBrasileiroContext.Entry(partida).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 this._campeonatoBrasileiroContext.SaveChanges();
             }
+
+            return partida;
         }
     }
 }

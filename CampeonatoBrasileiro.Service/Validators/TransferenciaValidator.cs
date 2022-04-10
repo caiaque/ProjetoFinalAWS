@@ -12,15 +12,15 @@ namespace CampeonatoBrasileiro.Service.Validators
     {
         public TransferenciaValidator()
         {
-            RuleFor(c => c.JogadorId)
+            RuleFor(c => c.Jogador)
                 .NotEmpty().WithMessage("Jogador associado a transferencia obrigatório.")
                 .NotNull().WithMessage("Jogador associado a transferencia obrigatório.");
 
-            RuleFor(c => c.TimeDestinoId)
+            RuleFor(c => c.TimeDestino)
                     .NotEmpty().WithMessage("Time associado ao jogador obrigatória.")
                     .NotNull().WithMessage("Time associado ao jogador obrigatória.");
 
-            RuleFor(c => c.TimeOrigemId)
+            RuleFor(c => c.TimeOrigem)
                 .NotEmpty().WithMessage("Time de origem do jogador obrigatória.")
                 .NotNull().WithMessage("Time de origem ao jogador obrigatória.");
 

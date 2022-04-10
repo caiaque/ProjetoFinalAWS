@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CampeonatoBrasileiro.Domain\CampeonatoBrasileiro.Domain.csproj" />
+    <ProjectReference Include="..\CampeonatoBrasileiro.Service\CampeonatoBrasileiro.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>

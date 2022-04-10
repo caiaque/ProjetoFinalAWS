@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CampeonatoBrasileiro.Domain.Entities
+namespace CampeonatoBrasileiro.Domain.DTOs
 {
-    public class PartidaTorneio: BaseEntity
+    public class PartidaDto
     {
-        public List<Time> TimesParticipantes { get; set; }
+        public List<Guid> Times { get; set; }
         public DateTime Data { get; set; }
         public int Duracao { get; set; }
-        public Torneio Torneio { get; set; }
-
     }
 }

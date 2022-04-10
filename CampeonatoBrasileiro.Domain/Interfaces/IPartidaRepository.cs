@@ -1,4 +1,5 @@
-﻿using CampeonatoBrasileiro.Domain.Entities;
+﻿using CampeonatoBrasileiro.Domain.DTOs;
+using CampeonatoBrasileiro.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace CampeonatoBrasileiro.Domain.Interfaces
     {
         PartidaTorneio Get(Guid id);
         IList<PartidaTorneio> GetList();
-        void Add(PartidaTorneio obj);
-        void Update(PartidaTorneio obj, Guid id);
+        PartidaTorneio Add(PartidaDto obj);
+        PartidaTorneio Update(PartidaDto obj, Guid id);
         void Delete(Guid id);
     }
 }

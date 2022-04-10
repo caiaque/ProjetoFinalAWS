@@ -16,7 +16,7 @@ namespace CampeonatoBrasileiro.Service.Validators
                     .NotEmpty().WithMessage("Nome do jogador obrigatório.")
                     .NotNull().WithMessage("Nome do jogador obrigatório.");
 
-            RuleFor(c => c.TimeId)
+            RuleFor(c => c.Time)
                     .NotEmpty().WithMessage("Time associado ao jogador obrigatória.")
                     .NotNull().WithMessage("Time associado ao jogador obrigatória.");
 

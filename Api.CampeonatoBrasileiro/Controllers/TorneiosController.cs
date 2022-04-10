@@ -1,4 +1,5 @@
-﻿using CampeonatoBrasileiro.Domain.Entities;
+﻿using CampeonatoBrasileiro.Domain.DTOs;
+using CampeonatoBrasileiro.Domain.Entities;
 using CampeonatoBrasileiro.Domain.Interfaces;
 using CampeonatoBrasileiro.Mensageiro.Interfaces;
 using CampeonatoBrasileiro.Service.Validators;
@@ -15,13 +16,13 @@ namespace CampeonatoBrasileiro.App.Controllers
     [ApiController]
     public class TorneiosController : Controller
     {
-        private IBaseService<Torneio> _baseTorneioService;
+        private ITorneioRepository _baseTorneioService;
         private ISend _send;
         private IBaseService<PartidaTorneio> _basePartidaService;
         private readonly IMemoryCache _cache;
         private const string PARTIDAS_KEY = "Partidas";
 
-        public TorneiosController(IBaseService<Torneio> baseTorneioService, ISend send, IBaseService<PartidaTorneio> basePartidaService, IMemoryCache cache)
+        public TorneiosController(ITorneioRepository baseTorneioService, ISend send, IBaseService<PartidaTorneio> basePartidaService, IMemoryCache cache)
         {
             _baseTorneioService = baseTorneioService;
             _send = send;
@@ -32,7 +33,7 @@ namespace CampeonatoBrasileiro.App.Controllers
         [HttpGet]
         public IActionResult ObterTodosOsTimes()
         {
-            return Execute(() => _baseTorneioService.GetAll());
+            return Execute(() => _baseTorneioService.GetList());
         }
 
         [HttpGet("{id}")]
@@ -41,28 +42,28 @@ namespace CampeonatoBrasileiro.App.Controllers
             if (id == Guid.Empty)
                 return NotFound();
 
-            return Execute(() => _baseTorneioService.GetById(id));
+            return Execute(() => _baseTorneioService.Get(id));
         }
 
         [HttpPost]
-        public IActionResult NovoTime([FromBody] Torneio torneio)
+        public IActionResult NovoTime([FromBody]TorneioDto torneio)
         {
             if (torneio == null)
                 return NotFound();
 
-            return Execute(() => _baseTorneioService.Add<TorneioValidator>(torneio).Id);
+            return Execute(() => _baseTorneioService.Add(torneio));
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] Torneio transferencia)
+        public IActionResult Update(Guid id, [FromBody]TorneioDto torneio)
         {
             if (id == Guid.Empty)
                 return NotFound();
 
-            if (transferencia == null)
+            if (torneio == null)
                 return NotFound();
 
-            return Execute(() => _baseTorneioService.Update<TorneioValidator>(transferencia, id));
+            return Execute(() => _baseTorneioService.Update(torneio, id));
         }
 
         [HttpDelete("{id}")]

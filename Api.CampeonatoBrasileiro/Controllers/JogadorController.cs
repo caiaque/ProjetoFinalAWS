@@ -1,4 +1,5 @@
-﻿using CampeonatoBrasileiro.Domain.Entities;
+﻿using CampeonatoBrasileiro.Domain.DTOs;
+using CampeonatoBrasileiro.Domain.Entities;
 using CampeonatoBrasileiro.Domain.Interfaces;
 using CampeonatoBrasileiro.Service.Validators;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,12 @@ namespace CampeonatoBrasileiro.App.Controllers
     public class JogadorController : Controller
     {
         private IBaseService<Jogador> _baseJogadorService;
+        private IJogadorRepository _jogadorRepository;
 
-        public JogadorController(IBaseService<Jogador> baseJogadorService)
+        public JogadorController(IBaseService<Jogador> baseJogadorService, IJogadorRepository jogadorRepository)
         {
             _baseJogadorService = baseJogadorService;
+            _jogadorRepository = jogadorRepository;
         }
 
         [HttpGet]
@@ -36,16 +39,16 @@ namespace CampeonatoBrasileiro.App.Controllers
         }
 
         [HttpPost]
-        public IActionResult NovoTime([FromBody] Jogador jogador)
+        public IActionResult NovoTime([FromBody]JogadorDto jogador)
         {
             if (jogador == null)
                 return NotFound();
 
-            return Execute(() => _baseJogadorService.Add<JogadorValidator>(jogador).Id);
+            return Execute(() => _jogadorRepository.Add(jogador));
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody]Jogador jogador)
+        public IActionResult Update(Guid id, [FromBody] JogadorDto jogador)
         {
             if (id == Guid.Empty)
                 return NotFound();
@@ -53,7 +56,7 @@ namespace CampeonatoBrasileiro.App.Controllers
             if (jogador == null)
                 return NotFound();
 
-            return Execute(() => _baseJogadorService.Update<JogadorValidator>(jogador, id));
+            return Execute(() => this._jogadorRepository.Update(jogador, id));
         }
 
         [HttpDelete("{id}")]

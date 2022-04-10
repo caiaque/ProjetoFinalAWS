@@ -8,5 +8,7 @@ namespace CampeonatoBrasileiro.Domain.Entities
     {
         public string Nome { get; set; }
         public string Localidade { get; set; }
+        public List<Torneio>? Torneios { get; set; }
+        public List<PartidaTorneio>? Partidas { get; set; }
     }
 }

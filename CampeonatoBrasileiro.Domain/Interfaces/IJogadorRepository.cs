@@ -8,12 +8,9 @@ using System.Threading.Tasks;
 
 namespace CampeonatoBrasileiro.Domain.Interfaces
 {
-    public interface ITorneioRepository
+    public interface IJogadorRepository
     {
-        Torneio Get(Guid id);
-        IList<Torneio> GetList();
-        Torneio Add(TorneioDto obj);
-        Torneio Update(TorneioDto obj, Guid id);
-        void Delete(Guid id);
+        Jogador Add(JogadorDto obj);
+        Jogador Update(JogadorDto obj, Guid id);
     }
 }

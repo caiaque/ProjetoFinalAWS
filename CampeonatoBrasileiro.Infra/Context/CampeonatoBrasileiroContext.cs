@@ -1,6 +1,5 @@
 ﻿
 using CampeonatoBrasileiro.Domain.Entities;
-using CampeonatoBrasileiro.Infra.Map;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -22,9 +21,6 @@ namespace CampeonatoBrasileiro.Infra.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Time>(new TimeMap().Configure);
-            modelBuilder.Entity<Jogador>(new JogadorMap().Configure);
-            modelBuilder.Entity<Transferencia>(new TransferenciaMap().Configure);
         }
     }
 }

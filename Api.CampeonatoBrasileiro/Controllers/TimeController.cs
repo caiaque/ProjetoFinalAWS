@@ -1,4 +1,5 @@
-﻿using CampeonatoBrasileiro.Domain.Entities;
+﻿using CampeonatoBrasileiro.Domain.DTOs;
+using CampeonatoBrasileiro.Domain.Entities;
 using CampeonatoBrasileiro.Domain.Interfaces;
 using CampeonatoBrasileiro.Service.Validators;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,12 @@ namespace CampeonatoBrasileiro.App.Controllers
     public class TimeController : Controller
     {
         private IBaseService<Time> _baseTimeService;
+        private readonly ITimeRepository _timeRepository;
 
-        public TimeController(IBaseService<Time> baseTimeService)
+        public TimeController(IBaseService<Time> baseTimeService, ITimeRepository timeRepository)
         {
             _baseTimeService = baseTimeService;
+            this._timeRepository = timeRepository;
         }
 
         [HttpGet]
@@ -36,16 +39,16 @@ namespace CampeonatoBrasileiro.App.Controllers
         }
 
         [HttpPost]
-        public IActionResult NovoTime([FromBody] Time time)
+        public IActionResult NovoTime([FromBody] TimeDto time)
         {
             if (time == null)
                 return NotFound();
 
-            return Execute(() => _baseTimeService.Add<TimeValidator>(time).Id);
+            return Execute(() => this._timeRepository.Add(time));
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] Time time)
+        public IActionResult Update(Guid id, [FromBody]TimeDto time)
         {
             if (id == Guid.Empty)
                 return NotFound();
@@ -53,7 +56,7 @@ namespace CampeonatoBrasileiro.App.Controllers
             if (time == null)
                 return NotFound();
 
-            return Execute(() => _baseTimeService.Update<TimeValidator>(time, id));
+            return Execute(() => this._timeRepository.Update(time, id));
         }
 
         [HttpDelete("{id}")]
@@ -62,13 +65,16 @@ namespace CampeonatoBrasileiro.App.Controllers
             if (id == Guid.Empty)
                 return NotFound();
 
-            Execute(() =>
+            try
             {
                 _baseTimeService.Delete(id);
-                return true;
-            });
-
-            return new NoContentResult();
+                return new NoContentResult();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
         private IActionResult Execute(Func<object> func)
         {
